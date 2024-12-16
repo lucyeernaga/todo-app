@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Estilos del layout principal */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* Estilos del footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .footer-button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Estilos para Tabs */
+        .Tabs-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+
+        .Tabs-button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .Tabs-contenido {
+            display: none;
+        }
+
+        .u-visible {
+            display: block;
+        }
+
+        .u-active {
+            background-color: #ddd;
+        }
+
+        /* Estilos del acordeón */
+        .acordeon {
+            border: 1px solid #ccc;
+        }
+
+        .acordeon-item {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .acordeon-header {
+            background-color: lightgreen;
+            cursor: pointer;
+        }
+
+        .acordeon-content {
+            display: none;
+        }
+
+        .active .acordeon-content {
+            display: block;
+        }
+
+        .active .acordeon-header {
+            background-color: lightsalmon;
+        }
+
+        /* Estilos del formulario y lista de tareas */
+        form {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Lista de tareas</h1>
+
+    <div class="main-content">
+        <!-- Tabs -->
+        <div class="Tabs-buttons">
+            <div class="Tabs-button" data-tab="pendientes">Pendientes</div>
+            <div class="Tabs-button" data-tab="todas">Todas</div>
+            <div class="Tabs-button" data-tab="perfil">Perfil</div>
+        </div>
+
+        <div class="content">
+            <div id="pendientes" class="Tabs-contenido u-visible">
+                <ul id="listaTareas"></ul>
+                <form id="formTarea">
+                    <input id="txtTarea" type="text" placeholder="Ingrese una tarea" required>
+                    <button type="submit">Agregar tarea</button>
+                </form>
+            </div>
+            <div id="todas" class="Tabs-contenido">
+                <ul id="listaTodas"></ul>
+            </div>
+            <div id="perfil" class="Tabs-contenido">
+                <div class="acordeon">
+                    <div class="acordeon-item">
+                        <div class="acordeon-header">Información del Perfil</div>
+                        <div class="acordeon-content">Detalles de usuario aquí</div>
+                    </div>
+                    <div class="acordeon-item">
+                        <div class="acordeon-header">Configuración</div>
+                        <div class="acordeon-content">Opciones de configuración aquí</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <button class="footer-button">Pendientes</button>
+        <button class="footer-button">Todas</button>
+        <button class="footer-button">Perfil</button>
+    </footer>
+
+    <script>
+        // Variables
+        const formu = document.getElementById("formTarea");
+        const txtTarea = document.getElementById("txtTarea");
+        const listaTareas = document.getElementById("listaTareas");
+        const listaTodas = document.getElementById("listaTodas");
+
+        let listaDeTareas = [
+            { id: 1, titulo: "Ordenar el código de JS", isCompletada: true },
+            { id: 524, titulo: "Crear las Funciones", isCompletada: false },
+            { id: 1056, titulo: "Probar el programa", isCompletada: false }
+        ];
+
+        // Mostrar tareas
+        function mostrarTareas() {
+            listaTareas.innerHTML = "";
+            listaDeTareas.forEach(tarea => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <input type="checkbox" id="${tarea.id}" ${tarea.isCompletada ? "checked" : ""} onclick="completarTarea(${tarea.id})">
+                    <label for="${tarea.id}">${tarea.titulo}</label>
+                    <button onclick="eliminarTarea(${tarea.id})">X</button>
+                `;
+                listaTareas.appendChild(li);
+            });
+        }
+
+        function mostrarTodas() {
+            listaTodas.innerHTML = "";
+            listaDeTareas.forEach(tarea => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <input type="checkbox" id="${tarea.id}" ${tarea.isCompletada ? "checked" : ""} onclick="completarTarea(${tarea.id})">
+                    <label for="${tarea.id}">${tarea.titulo}</label>
+                    <button onclick="eliminarTarea(${tarea.id})">X</button>
+                `;
+                listaTodas.appendChild(li);
+            });
+        }
+
+        function agregarTarea() {
+            const nuevaTarea = txtTarea.value.trim();
+            if (nuevaTarea) {
+                const nuevoID = Date.now();
+                listaDeTareas.push({ id: nuevoID, titulo: nuevaTarea, isCompletada: false });
+                mostrarTareas();
+                mostrarTodas();
+                txtTarea.value = "";
+            }
+        }
+
+        function eliminarTarea(idTarea) {
+            listaDeTareas = listaDeTareas.filter(tarea => tarea.id !== idTarea);
+            mostrarTareas();
+            mostrarTodas();
+        }
+
+        function completarTarea(idTarea) {
+            const tarea = listaDeTareas.find(t => t.id === idTarea);
+            tarea.isCompletada = !tarea.isCompletada;
+            mostrarTareas();
+            mostrarTodas();
+        }
+
+        // Eventos
+        formu.addEventListener("submit", (event) => {
+            event.preventDefault();
+            agregarTarea();
+        });
+
+        // Funciones para el manejo de tabs
+        const tabsButtons = document.querySelectorAll(".Tabs-button");
+        const tabsContents = document.querySelectorAll(".Tabs-contenido");
+
+        tabsButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const tabId = button.getAttribute("data-tab");
+                tabsContents.forEach(content => {
+                    if (content.id === tabId) {
+                        content.classList.add("u-visible");
+                    } else {
+                        content.classList.remove("u-visible");
+                    }
+                });
+                tabsButtons.forEach(btn => btn.classList.remove("u-active"));
+                button.classList.add("u-active");
+            });
+        });
+
+        // Funciones para el acordeón
+        const acordeonHeaders = document.querySelectorAll(".acordeon-header");
+        acordeonHeaders.forEach(header => {
+            header.addEventListener("click", () => {
+                const item = header.closest(".acordeon-item");
+                item.classList.toggle("active");
+            });
+        });
+
+        // Inicialización
+        mostrarTareas();
+        mostrarTodas();
+
+    </script>
+</body>
+
+</html>
