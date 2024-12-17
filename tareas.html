@@ -66,6 +66,7 @@
             display: none;
         }
 
+        /* Utilities */
         .u-visible {
             display: block;
         }
@@ -182,12 +183,15 @@
 
     <script>
         // ----------------------------------------------
-        // Variables
+        // Tareas
+        // 1. Constantes y variables
+
         const formu = document.getElementById("formTarea");
         const txtTarea = document.getElementById("txtTarea");
         const listaTareas = document.getElementById("listaTareas");
         const listaTodas = document.getElementById("listaTodas");
 
+        // const listaDeTareas = ["Ordenar el código JS", "Crear las Funciones", "Probar el programa"];
         let listaDeTareas = [
             { id: 1, titulo: "Ordenar el código de JS", isCompletada: true },
             { id: 524, titulo: "Crear las Funciones", isCompletada: false },
@@ -195,7 +199,8 @@
         ];
 
         // -----------------------------------------------
-        // Mostrar tareas
+        // 2. Funciones utilitarias (reutilizables)
+
         function mostrarTareas() {
             listaTareas.innerHTML = "";
             listaDeTareas.forEach(tarea => {
@@ -246,14 +251,14 @@
             mostrarTodas();
         }
 
-        // Eventos
+        // EventListeners
         formu.addEventListener("submit", (event) => {
             event.preventDefault();
             agregarTarea();
         });
 
         // --------------------------------------------
-        // Funciones para el manejo de tabs
+        // Tabs
         const tabsButtons = document.querySelectorAll(".Tabs-button");
         const tabsContents = document.querySelectorAll(".Tabs-contenido");
 
