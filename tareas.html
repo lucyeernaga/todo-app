@@ -240,13 +240,36 @@
         }
 
         function eliminarTarea(idTarea) {
+            // 1. método usando forEach y splice
+            // listaDeTareas.forEach( (tarea, index) => {
+            //     if (tarea.id == idTarea){
+            //         listaDeTareas.splice(index, 1);
+            //     }
+            // });
+
+
+            // 2. método usando findindex
+            // const index = listaDeTareas.findIndex( (t) => t.id === idTarea);
+            // listaDeTareas.splice(index, 1);
+
+            // 3. método usando filter
+            // para que este funcione, listaDeTareas tiene que estar definido con let
             listaDeTareas = listaDeTareas.filter(tarea => tarea.id !== idTarea);
+            // devuelve todas lass tareas que no tenegan idTarea
             mostrarTareas();
             mostrarTodas();
         }
 
         function completarTarea(idTarea) {
+            // 1. buscar el elemento con el id deseado
             const tarea = listaDeTareas.find(t => t.id === idTarea);
+
+            // 2. cambiar el valor de isCompletada
+            // if(tarea.isCompletada == true){
+            //     tarea.isCompletada = false;
+            // } else {
+            //     tarea.isCompletada = true;
+            // }
             tarea.isCompletada = !tarea.isCompletada;
             mostrarTareas();
             mostrarTodas();
